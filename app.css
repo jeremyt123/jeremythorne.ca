@@ -1,0 +1,39 @@
+body {
+	font-family: 'Roboto', sans-serif;
+}
+
+h2{
+	font-size: 4vw;
+}
+
+#space{
+	padding-top: 50px;
+}
+
+button {
+  border: none;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-block;
+  height: 100px;
+  padding-bottom: 150px;
+}
+
+iframe{
+  display: block;
+  margin-left: 27vw;
+  margin-top: -24.5vw;
+  overflow: hidden;
+}
+
+p {
+  font-size: 5vw;
+}
+
+.norm{
+  font-size:5vw;
+  padding-left: 10px;
+  margin-top: 0px;
+}
+
