@@ -1,0 +1,149 @@
+/*
+THIS PROGRAM CALCULATES THE FLESCH INDEX FOR A TEXT FILE
+IT ALSO OUTPUTS NUMBER OF SENTENCES, WORDS, AND SYLLABLES
+
+TO RUN ./fleschIndex filename.txt
+CREATED BY JEREMY THORNE
+*/
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <math.h>
+
+int wordCount (char input[]);
+int syllableCount (char input[]);
+int sentenceCount (char input[]);
+
+int main(int argc, char* argv[]){
+    //declaring vars
+    char line[10000];
+    char **inputAr;
+    int index = 0;
+    int sylTotal = 0;
+    int wordTotal = 0;
+    int senTotal = 0;
+    float fIndex = 0;
+
+    //checking to make sure a file was entered when along with the run command
+    if(argc < 2){
+        printf("File name not provided\n");
+        return 0;
+    }
+    //opens in the file and stores it in input
+    FILE *input = fopen(argv[1], "r");
+
+    //checks to make sure the file was able to be found and opened
+    if (input == NULL){
+        printf("File could not be found, Ending program\n");
+        return 0;
+    }
+
+    inputAr = malloc(sizeof(char *));
+    /*storing the contents of the file in memory*/
+    while(fgets(line, sizeof(line), input) != NULL){
+        //locates enough room in each index for each line
+        inputAr[index] = malloc(sizeof(char) * (strlen(line) + 1));
+        //copies contents on line into array
+        strcpy(inputAr[index], line);
+        index++;
+        //adds another spot for a line in the array
+        inputAr = realloc(inputAr, sizeof(char *) * (index + 1));
+    }
+    fclose(input);
+
+    //using custom functions to calculate syllabes words and sentences
+    for(int i = 0; i < index; i++){
+        sylTotal += syllableCount(inputAr[i]);
+        wordTotal += wordCount(inputAr[i]);
+        senTotal += sentenceCount(inputAr[i]);
+    }
+    //calculates Flesch Index and also makes sure there is >0 sentences since the formula needs that
+    if (senTotal > 0){
+        fIndex = 206.835 - (84.6 *(sylTotal/wordTotal)) - (1.015 * (wordTotal/senTotal));
+    }
+    else{
+        printf("Cant have 0 sentences\n");
+        return 0;
+    }
+
+    printf("Flesch Index = %.0f\n", round(fIndex));
+    printf("Syllable Count = %d\n", sylTotal);
+    printf("Word Count = %d\n", wordTotal);
+    printf("Sentence Count = %d\n", senTotal);
+
+    //frees the pointer array contatining the file contents
+    for(int i = 0; i < index; i++){
+        free(inputAr[i]);
+    }
+    free(inputAr);
+
+    return 0;
+}
+
+int wordCount (char input[]){
+    int wordCount = 0;
+    int i;
+    int state = 0; //used incase there are multiple spaces in a row
+	//loop runs through each char in the user input checking if its a space
+    for(i = 1; i < strlen(input); i++){
+        if (isblank(input[i]) || input[i] == '\n'){
+            state = 1;
+        }
+        else if (state == 1){
+            state = 0;
+            wordCount++;
+        }
+    }
+    //+ 1 added since the last word doesnt have a space after it
+    return wordCount + 1;
+}
+
+int syllableCount (char input[]){
+    int sylCount = 0;
+    char syllables[14] = "aeiouyAEIOUY"; //all the syllables
+    int wordS = 0;
+
+    for(int i = 0; i < strlen(input); i++){
+        //adds one to sylCount if it detects a vowel
+        if(strchr(syllables, input[i]) != NULL){
+            sylCount++;
+            wordS++;
+        }
+        //removes a syllable if the vowel is an e at the end of a word
+        if(input[i] == 'e' && (input[i + 1] == ' ' || iscntrl(input[i + 1]) || ispunct(input[i + 1]))){
+            sylCount--;
+            wordS--;
+        }
+        //removes a syllable if the previous index was a syllable (checks for consecuative syllables)
+        if(strchr(syllables, input[i]) != NULL && strchr(syllables, input[i - 1]) != NULL){
+            sylCount--;
+            wordS--;
+        }
+        //used to check if the word had a syllable in it, if not adds one
+        if((isspace(input[i])) && (wordS == 0) && ((isalpha(input[i - 1])) || ispunct(input[i - 1]))){
+            sylCount++;
+            wordS = 0;
+        }
+        else if(isspace(input[i])){
+            wordS = 0;
+        }
+        //used to add syllabes for numbers
+        if(isdigit(input[i]) && isdigit(input[i + 1]) == 0){
+            sylCount++;
+        }
+    }
+    return sylCount;
+}
+
+int sentenceCount (char input[]){
+    char sentenceEnd[6] = ".;:?!";
+    int senCount = 0;
+    //looks for sentence enders then adds one to sentence total
+    for(int i = 1; i < strlen(input); i++){
+        if (strchr(sentenceEnd, input[i]) != NULL && strchr(sentenceEnd, input[i - 1]) == NULL){
+            senCount++;
+        }
+    }
+    return senCount;
+}
