@@ -37,7 +37,6 @@ p {
   margin-top: 0px;
 }
 
-/*code for spinning title*/
 #spinner {
   text-align: center;
   animation-name: spin, depth;
