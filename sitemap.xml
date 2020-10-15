@@ -1,0 +1,32 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+    <url>
+        <loc>https://jeremythorne.ca/</loc>
+        <lastmod>2020-08-15T23:24:51+00:00</lastmod>
+        <priority>1.00</priority>
+    </url>
+    <url>
+        <loc>https://jeremythorne.ca/main.html</loc>
+        <lastmod>2020-08-15T23:24:51+00:00</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://jeremythorne.ca/about.html</loc>
+        <lastmod>2020-08-15T23:24:51+00:00</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://jeremythorne.ca/projects.html</loc>
+        <lastmod>2020-08-15T23:24:51+00:00</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://jeremythorne.ca/contact.html</loc>
+        <lastmod>2020-08-15T23:24:51+00:00</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://jeremythorne.ca/tutoring.html</loc>
+        <lastmod>2020-08-15T23:24:51+00:00</lastmod>
+        <priority>0.80</priority>
+    </url>
+</urlset>
